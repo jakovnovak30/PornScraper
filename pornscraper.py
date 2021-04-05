@@ -217,6 +217,27 @@ def pornmdslike(pojam):
 
     return
 
+def spankbang(pojam):
+    url = "https://spankbang.com"
+    browser.get(url)
+
+    serch = browser.find_element_by_xpath('//*[@id="body-html"]/header/ul/li[2]/form/input')
+
+    try:
+        serch.click()
+        serch.send_keys(pojam + '\n')
+    except:
+        print('Nekaj jebe spankbang')
+
+    rezultati = browser.find_elements_by_class_name('cover lazyload')
+
+    for rezultat in rezultati:
+        naslov = rezultat.get_attribute('alt')
+        if pojam.lower() in naslov.lower():
+            print(naslov + " from spankbang.com")
+
+    return
+
 def main():
     upis = input("Unesite pojam za pretrazivanje: ")
     upis2 = input("Video ili slike? (upisi 'v' ili 's')")
@@ -229,6 +250,7 @@ def main():
         pornmd(upis)
         xvideos(upis)
         pornhub(upis)
+        spankbang(upis)
     elif upis2 == "s":
         print("Work in progress...")
         pornpics(upis)
