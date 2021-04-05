@@ -1,0 +1,2 @@
+selenium (pip install selenium or pip3 install selenium)
+chrome web driver (get it from here: https://chromedriver.chromium.org/downloads)
