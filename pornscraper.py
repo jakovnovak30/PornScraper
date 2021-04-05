@@ -281,10 +281,29 @@ def homemoviestube(pojam):
             print(naslov + " from homemoviestube.com")
     return
 
+def porngiphy(pojam):
+    url = "https://porngipfy.com/"
+    browser.get(url)
+
+    serch = browser.find_element_by_class_name('field')
+
+    #try:
+    serch.click()
+    serch.send_keys(pojam + '\n')
+    #except:
+    #    print('Nekaj jebe porngiphy')
+
+    rezultati = browser.find_elements_by_tag_name('img')
+
+    for rezultat in rezultati:
+        naslov = rezultat.get_attribute('alt')
+        if pojam.lower() in naslov.lower():
+            print(naslov + " from porngiphy.com")
+
+    return
 
 def main():
     upis = input("Unesite pojam za pretrazivanje: ")
-
 
     upis2 = input("Video ili slike? (upisi 'v' ili 's')")
 
@@ -303,6 +322,7 @@ def main():
         pornpics(upis)
         pornmdslike(upis)
         imagefap(upis)
+        porngiphy(upis)    
         #redgifs(upis)
     else:
         print("Try again")
