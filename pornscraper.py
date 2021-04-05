@@ -175,6 +175,27 @@ def pornpics(pojam):
 
     return
 
+def imagefap(pojam):
+    url = "https://imagefap.com"
+    browser.get(url)
+
+    serch = browser.find_element_by_xpath('/html/body/center/table[1]/tbody/tr[1]/td[2]/form/table/tbody/tr/td[1]/input[1]')
+    try:
+        serch.click()
+        serch.send_keys(pojam + '\n')
+    except:
+        print('Nekaj jebe imagefap.com')
+
+    rezultati = browser.find_element_by_xpath('//*[@id="main"]/center/table/tbody/tr/td[2]/form/table/tbody/tr/td/table[2]/tbody')
+    tekst = rezultati.text
+    polje = tekst.split('\n')
+
+    for naslov in polje:
+        if pojam in naslov:
+            print(naslov + " from imagefap.com")
+
+    return
+
 def main():
     upis = input("Unesite pojam za pretrazivanje: ")
     upis2 = input("Video ili slike? (upisi 'v' ili 's')")
@@ -189,7 +210,8 @@ def main():
         pornhub(upis)
     elif upis2 == "s":
         print("Work in progress...")
-        pornpics(upis)
+        #pornpics(upis)
+        imagefap(upis)
     else:
         print("Try again")
         main()
