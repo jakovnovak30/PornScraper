@@ -229,7 +229,7 @@ def spankbang(pojam):
     except:
         print('Nekaj jebe spankbang')
 
-    rezultati = browser.find_elements_by_class_name('cover lazyload')
+    rezultati = browser.find_elements_by_tag_name('img')
 
     for rezultat in rezultati:
         naslov = rezultat.get_attribute('alt')
@@ -238,8 +238,54 @@ def spankbang(pojam):
 
     return
 
+def redgifs(pojam):
+    url = "https://redgifs.com"
+    browser.get(url)
+
+    serch = browser.find_element_by_xpath('//*[@id="root"]/div/div/header/div[1]/form/div/div/input')
+
+    try:
+        serch.click()
+        serch.send_keys(pojam + '\n')
+    except:
+        print('Nekaj jebe redgifs')
+
+    rezultati = browser.find_elements_by_tag_name('img')
+
+    for rezultat in rezultati:
+        try: naslov = rezultat.get_attribute('alt')
+        except: continue
+        print(naslov)
+        if pojam.lower() in naslov.lower():
+            print(naslov + " from redgifs.com")
+
+    return
+
+def homemoviestube(pojam):
+    url = "https://homemoviestube.com"
+    browser.get(url)
+
+    serch = browser.find_element_by_xpath('//*[@id="searchform-field-white"]')
+
+    try:
+        serch.click()
+        serch.send_keys(pojam + '\n')
+    except:
+        print('Nekaj jebe homemoviestube')
+
+    rezultati = browser.find_elements_by_tag_name('img')
+
+    for rezultat in rezultati:
+        naslov = rezultat.get_attribute('alt')
+        if pojam.lower() in naslov.lower():
+            print(naslov + " from homemoviestube.com")
+    return
+
+
 def main():
     upis = input("Unesite pojam za pretrazivanje: ")
+
+
     upis2 = input("Video ili slike? (upisi 'v' ili 's')")
 
     if upis2 == "v":
@@ -251,11 +297,13 @@ def main():
         xvideos(upis)
         pornhub(upis)
         spankbang(upis)
+        homemoviestube(upis)
+
     elif upis2 == "s":
-        print("Work in progress...")
         pornpics(upis)
         pornmdslike(upis)
         imagefap(upis)
+        #redgifs(upis)
     else:
         print("Try again")
         main()
