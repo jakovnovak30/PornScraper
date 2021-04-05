@@ -16,7 +16,7 @@ def pornhub(pojam):
     polje = tekst.split('\n')
 
     for naslov in polje:
-        if pojam in naslov:
+        if pojam.lower() in naslov.lower():
             print(naslov + " from pornhub.com")
     return
 
@@ -35,7 +35,7 @@ def xvideos(pojam):
     polje = tekst.split('\n')
 
     for naslov in polje:
-        if pojam in naslov:
+        if pojam.lower() in naslov.lower():
             print(naslov + " from xvideos.com")
     return
 
@@ -56,7 +56,7 @@ def pornmd(pojam):
     polje = tekst.split('\n')
 
     for naslov in polje:
-        if pojam in naslov:
+        if pojam.lower() in naslov.lower():
             print(naslov + " from pornmd.com")
     return
 
@@ -78,7 +78,7 @@ def xnxx(pojam):
     polje = tekst.split('\n')
 
     for naslov in polje:
-        if pojam in naslov:
+        if pojam.lower() in naslov.lower():
             print(naslov + " from xnxx.com")
     return
 
@@ -101,7 +101,7 @@ def xhamster(pojam):
     polje = tekst.split('\n')
 
     for naslov in polje:
-        if pojam in naslov:
+        if pojam.lower() in naslov.lower():
             print(naslov + " from xhamster.com")
 
     return
@@ -126,7 +126,7 @@ def erome(pojam):
     polje = tekst.split('\n')
 
     for naslov in polje:
-        if pojam in naslov:
+        if pojam.lower() in naslov.lower():
             print(naslov + " from erome.com")
 
     return
@@ -148,7 +148,7 @@ def hqporner(pojam):
     polje = tekst.split('\n')
 
     for naslov in polje:
-        if pojam in naslov:
+        if pojam.lower() in naslov.lower():
             print(naslov + " from hqporner.com")
 
     return
@@ -164,13 +164,11 @@ def pornpics(pojam):
     except:
         print('Nekaj jebe pornpics.com')
 
-    rezultati = browser.find_element_by_xpath('//*[@id="content"]')
-    tekst = rezultati.text
-    polje = tekst.split('\n')
+    rezultati = browser.find_elements_by_class_name('ll-loaded')
 
-    for naslov in polje:
-        print(naslov)
-        if pojam in naslov:
+    for rezultat in rezultati:
+        naslov = rezultat.get_attribute('alt')
+        if pojam.lower() in naslov.lower():
             print(naslov + " from pornpics.com")
 
     return
@@ -191,8 +189,31 @@ def imagefap(pojam):
     polje = tekst.split('\n')
 
     for naslov in polje:
-        if pojam in naslov:
+        if pojam.lower() in naslov.lower():
             print(naslov + " from imagefap.com")
+
+    return
+
+def pornmdslike(pojam):
+    url = "https://pornmd.com"
+    browser.get(url)
+
+    browser.find_element_by_xpath('//*[@id="searchBarFormWrapper"]/div/form/a').click()
+    browser.find_element_by_xpath('//*[@id="searchBarFormWrapper"]/div/form/ul[1]/li[2]').click()
+    serch = browser.find_element_by_xpath('//*[@id="searchBarFormWrapper"]/div/form/input')
+    try:
+        serch.click()
+        serch.send_keys(pojam)
+        browser.find_element_by_xpath('//*[@id="searchBarFormWrapper"]/div/form/button').click()
+    except:
+        print('Nekaj jebe pornmd')
+
+    rezultati = browser.find_elements_by_class_name('lazyload')
+
+    for rezultat in rezultati:
+        naslov = rezultat.get_attribute('alt')
+        if pojam.lower() in naslov.lower():
+            print(naslov + " from pornmd.com")
 
     return
 
@@ -210,7 +231,8 @@ def main():
         pornhub(upis)
     elif upis2 == "s":
         print("Work in progress...")
-        #pornpics(upis)
+        pornpics(upis)
+        pornmdslike(upis)
         imagefap(upis)
     else:
         print("Try again")
