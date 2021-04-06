@@ -4,7 +4,7 @@ import time
 
 browser = webdriver.Chrome('/home/jakov/Documents/pornscraper/chromedriver')
 preciznost = True
-prag = 0.8 #mininmalna preciznost za sequence matcher
+prag = 95 #mininmalna preciznost za sequence matcher
 timeout = 20 #koliko sekundi treba skrolati na stranicama s "infinite scrollom"
 
 def xvideos(pojam):
