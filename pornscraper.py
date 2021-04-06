@@ -4,7 +4,8 @@ import time
 
 browser = webdriver.Chrome('/home/jakov/Documents/pornscraper/chromedriver')
 preciznost = True
-prag = 0.6 #mininmalna preciznost za sequence matcher
+prag = 0.8 #mininmalna preciznost za sequence matcher
+timeout = 20 #koliko sekundi treba skrolati na stranicama s "infinite scrollom"
 
 def xvideos(pojam):
     url = "https://xvideos.com"
@@ -41,8 +42,8 @@ def pornmd(pojam):
 
     reached_page_end = False
     last_height = browser.execute_script("return document.body.scrollHeight;")
-
-    while not reached_page_end:
+    vreme = time.time()
+    while not reached_page_end and time.time() - vreme < timeout:
             browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(1)
             curent_height = browser.execute_script("return document.body.scrollHeight;")
@@ -176,8 +177,8 @@ def pornpics(pojam):
 
     reached_page_end = False
     last_height = browser.execute_script("return document.body.scrollHeight;")
-
-    while not reached_page_end:
+    vreme = time.time()
+    while not reached_page_end and time.time() - vreme < timeout:
             browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(1)
             curent_height = browser.execute_script("return document.body.scrollHeight;")
@@ -238,8 +239,8 @@ def pornmdslike(pojam):
 
     reached_page_end = False
     last_height = browser.execute_script("return document.body.scrollHeight;")
-
-    while not reached_page_end:
+    vreme = time.time()
+    while not reached_page_end and time.time() - vreme < timeout:
             browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(1)
             curent_height = browser.execute_script("return document.body.scrollHeight;")
@@ -364,20 +365,56 @@ def main():
         preciznost = False
 
     if upis2 == "v":
-        hqporner(upis) #linkovi delaju
-        erome(upis) #linkovi delaju
-        xhamster(upis) #linkovi delaju
-        xnxx(upis) #linkovi delaju
-        pornmd(upis) #linkovi delaju
-        xvideos(upis) #linkovi delaju
-        spankbang(upis) #linkovi delaju
-        homemoviestube(upis) #linkovi delaju
+        try:
+            hqporner(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe hqporner')
+        try:
+            erome(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe erome')
+        try:
+            xhamster(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe xhamster')
+        try:
+            xnxx(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe xnxx')
+        try:
+            pornmd(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe pornmd')
+        try:
+            xvideos(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe xvideos')
+        try:
+            spankbang(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe spankbang')
+        try:
+            homemoviestube(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe homemoviestube')
 
     elif upis2 == "s":
-        pornpics(upis) #linkovi delaju
-        pornmdslike(upis) #linkovi delaju
-        imagefap(upis) #nekaj jebe
-        porngiphy(upis) #popupi guze
+        try:
+            pornpics(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe pornpics')
+        try:
+            pornmdslike(upis) #linkovi delaju
+        except:
+            print('Nekaj jebe pornmd')
+        try:
+            imagefap(upis) #nekaj jebe
+        except:
+            print('Nekaj jebe imagefap')
+        try:
+            porngiphy(upis) #popupi guze
+        except:
+            print('Nekaj jebe porngiphy')
         #redgifs(upis)
     else:
         print("Try again")
