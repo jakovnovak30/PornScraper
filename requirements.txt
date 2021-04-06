@@ -1,2 +1,4 @@
 selenium (pip install selenium or pip3 install selenium)
+fuzzywuzzy string matching (pip install fuzzywuzzy)
+python levenshtein (pip install levenshtein)
 chrome web driver (get it from here: https://chromedriver.chromium.org/downloads)
