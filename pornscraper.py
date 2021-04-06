@@ -1,30 +1,10 @@
 from selenium import webdriver
 from difflib import SequenceMatcher as SM
+import time
 
 browser = webdriver.Chrome('/home/jakov/Documents/pornscraper/chromedriver')
 preciznost = True
 prag = 0.6 #mininmalna preciznost za sequence matcher
-
-def pornhub(pojam):
-    url = "https://pornhub.com"
-    browser.get(url)
-
-    serch = browser.find_element_by_xpath('//*[@id="searchInput"]')
-    serch.click()
-    serch.send_keys(pojam + '\n')
-
-    rezultati = browser.find_elements_by_tag_name('a')
-
-    for rezultat in rezultati:
-        naslov = rezultat.get_attribute('data-title')
-        if naslov == None: continue
-
-        if pojam.lower() in naslov.lower() and preciznost:
-            print(naslov + " -> " + rezultat.get_attribute('href'))
-        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
-            print(naslov + " -> " + rezultat.get_attribute('href'))
-
-    return
 
 def xvideos(pojam):
     url = "https://xvideos.com"
@@ -57,6 +37,13 @@ def pornmd(pojam):
         serch.send_keys(pojam + '\n')
     except:
         print('Nekaj jebe pornmd')
+
+    vreme = time.time()
+    while time.time() - vreme < 3:
+        try:
+            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        except:
+            break
 
     rezultati = browser.find_elements_by_class_name('video-title')
 
@@ -232,6 +219,13 @@ def pornmdslike(pojam):
     except:
         print('Nekaj jebe pornmd')
 
+    vreme = time.time()
+    while time.time() - vreme < 3:
+        try:
+            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        except:
+            break
+
     rezultati = browser.find_elements_by_class_name('img-block')
 
     for rezultat in rezultati:
@@ -354,7 +348,6 @@ def main():
         xnxx(upis) #linkovi delaju
         pornmd(upis) #linkovi delaju
         xvideos(upis) #linkovi delaju
-        pornhub(upis) #linkovi delaju
         spankbang(upis) #linkovi delaju
         homemoviestube(upis) #linkovi delaju
 
