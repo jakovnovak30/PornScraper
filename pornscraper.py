@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from difflib import SequenceMatcher as SM
 import time
 
@@ -38,12 +40,18 @@ def pornmd(pojam):
     except:
         print('Nekaj jebe pornmd')
 
-    vreme = time.time()
-    while time.time() - vreme < 3:
-        try:
+
+    reached_page_end = False
+    last_height = browser.execute_script("return document.body.scrollHeight;")
+
+    while not reached_page_end:
             browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        except:
-            break
+            time.sleep(1)
+            curent_height = browser.execute_script("return document.body.scrollHeight;")
+            if last_height == curent_height and browser.execute_script("return document.readyState;") == "complete":
+                reached_page_end = True
+            else:
+                last_height = curent_height
 
     rezultati = browser.find_elements_by_class_name('video-title')
 
@@ -168,6 +176,18 @@ def pornpics(pojam):
     except:
         print('Nekaj jebe pornpics.com')
 
+    reached_page_end = False
+    last_height = browser.execute_script("return document.body.scrollHeight;")
+
+    while not reached_page_end:
+            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1)
+            curent_height = browser.execute_script("return document.body.scrollHeight;")
+            if last_height == curent_height and browser.execute_script("return document.readyState;") == "complete":
+                reached_page_end = True
+            else:
+                last_height = curent_height
+
     rezultati = browser.find_elements_by_class_name('rel-link')
 
     for rezultat in rezultati:
@@ -197,7 +217,6 @@ def imagefap(pojam):
             naslov = rezultat.get_attribute('title')
         except:
             continue
-        print(naslov)
         if pojam.lower() in naslov.lower() and preciznost:
             print(naslov + " -> " + rezultat.get_attribute('href'))
         elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
@@ -219,12 +238,17 @@ def pornmdslike(pojam):
     except:
         print('Nekaj jebe pornmd')
 
-    vreme = time.time()
-    while time.time() - vreme < 3:
-        try:
+    reached_page_end = False
+    last_height = browser.execute_script("return document.body.scrollHeight;")
+
+    while not reached_page_end:
             browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        except:
-            break
+            time.sleep(1)
+            curent_height = browser.execute_script("return document.body.scrollHeight;")
+            if last_height == curent_height and browser.execute_script("return document.readyState;") == "complete":
+                reached_page_end = True
+            else:
+                last_height = curent_height
 
     rezultati = browser.find_elements_by_class_name('img-block')
 
