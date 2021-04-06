@@ -1,7 +1,9 @@
 from selenium import webdriver
+from difflib import SequenceMatcher as SM
 
 browser = webdriver.Chrome('/home/jakov/Documents/pornscraper/chromedriver')
 preciznost = True
+prag = 0.6 #mininmalna preciznost za sequence matcher
 
 def pornhub(pojam):
     url = "https://pornhub.com"
@@ -16,7 +18,10 @@ def pornhub(pojam):
     for rezultat in rezultati:
         naslov = rezultat.get_attribute('data-title')
         if naslov == None: continue
-        if pojam.lower() in naslov.lower():
+
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
@@ -35,7 +40,9 @@ def xvideos(pojam):
 
     for rezultat in rezultati:
         naslov = rezultat.find_element_by_tag_name('a').get_attribute('title')
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
 
     return
@@ -55,7 +62,9 @@ def pornmd(pojam):
 
     for rezultat in rezultati:
         naslov = rezultat.find_element_by_tag_name('a').get_attribute('title')
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
 
     return
@@ -78,7 +87,9 @@ def xnxx(pojam):
         naslov = rezultat.get_attribute('title')
         if naslov == None: continue
 
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
@@ -105,7 +116,9 @@ def xhamster(pojam):
         except:
             continue
         if naslov == None: continue
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
@@ -128,7 +141,9 @@ def erome(pojam):
 
     for rezultat in rezultati:
         naslov = rezultat.find_element_by_class_name('album-title').text
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
@@ -148,7 +163,9 @@ def hqporner(pojam):
 
     for rezultat in rezultati:
         naslov = rezultat.text
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
@@ -168,7 +185,9 @@ def pornpics(pojam):
 
     for rezultat in rezultati:
         naslov = rezultat.get_attribute('title')
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
@@ -192,7 +211,9 @@ def imagefap(pojam):
         except:
             continue
         print(naslov)
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
@@ -215,7 +236,9 @@ def pornmdslike(pojam):
 
     for rezultat in rezultati:
         naslov = rezultat.find_element_by_tag_name('a').get_attribute('title')
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
 
     return
@@ -237,7 +260,9 @@ def spankbang(pojam):
     for rezultat in rezultati:
         naslov = rezultat.text
         if naslov == None: continue
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
@@ -260,7 +285,9 @@ def redgifs(pojam):
         try: naslov = rezultat.get_attribute('alt')
         except: continue
         print(naslov)
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " from redgifs.com")
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " from redgifs.com")
 
     return
@@ -281,7 +308,9 @@ def homemoviestube(pojam):
 
     for rezultat in rezultati:
         naslov = rezultat.find_element_by_tag_name('a').text
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
 
     return
@@ -302,7 +331,9 @@ def porngiphy(pojam):
 
     for rezultat in rezultati:
         naslov = rezultat.get_attribute('alt')
-        if pojam.lower() in naslov.lower():
+        if pojam.lower() in naslov.lower() and preciznost:
+            print(naslov + " from porngiphy.com")
+        elif not preciznost and SM(None, pojam.lower(), naslov.lower()).ratio() > prag:
             print(naslov + " from porngiphy.com")
 
     return
@@ -310,7 +341,11 @@ def porngiphy(pojam):
 def main():
     upis = input("Unesite pojam za pretrazivanje: ")
     upis2 = input("Video ili slike? (upisi 'v' ili 's')")
-    #upis3 = input("Show only exact matches? (y/n)") #radi se na tome
+    upis3 = input("Show only exact matches? (y/n)")
+
+    if upis3 == "n":
+        global preciznost
+        preciznost = False
 
     if upis2 == "v":
         hqporner(upis) #linkovi delaju
