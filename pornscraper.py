@@ -1,6 +1,7 @@
 from selenium import webdriver
 
 browser = webdriver.Chrome('/home/jakov/Documents/pornscraper/chromedriver')
+preciznost = True
 
 def pornhub(pojam):
     url = "https://pornhub.com"
@@ -10,14 +11,14 @@ def pornhub(pojam):
     serch.click()
     serch.send_keys(pojam + '\n')
 
-    rezultati = browser.find_element_by_xpath('//*[@id="videoSearchResult"]')
+    rezultati = browser.find_elements_by_tag_name('a')
 
-    tekst = rezultati.text
-    polje = tekst.split('\n')
-
-    for naslov in polje:
+    for rezultat in rezultati:
+        naslov = rezultat.get_attribute('data-title')
+        if naslov == None: continue
         if pojam.lower() in naslov.lower():
-            print(naslov + " from pornhub.com")
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+
     return
 
 def xvideos(pojam):
@@ -30,13 +31,13 @@ def xvideos(pojam):
     except: print('Nebrem kliknuti')
     serch.send_keys(pojam + '\n')
 
-    rezultati = browser.find_element_by_xpath('//*[@id="content"]')
-    tekst = rezultati.text
-    polje = tekst.split('\n')
+    rezultati = browser.find_elements_by_class_name('thumb-under')
 
-    for naslov in polje:
+    for rezultat in rezultati:
+        naslov = rezultat.find_element_by_tag_name('a').get_attribute('title')
         if pojam.lower() in naslov.lower():
-            print(naslov + " from xvideos.com")
+            print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
+
     return
 
 def pornmd(pojam):
@@ -50,14 +51,13 @@ def pornmd(pojam):
     except:
         print('Nekaj jebe pornmd')
 
-    rezultati = browser.find_element_by_xpath('//*[@id="listResultContainer"]/ul')
+    rezultati = browser.find_elements_by_class_name('video-title')
 
-    tekst = rezultati.text
-    polje = tekst.split('\n')
-
-    for naslov in polje:
+    for rezultat in rezultati:
+        naslov = rezultat.find_element_by_tag_name('a').get_attribute('title')
         if pojam.lower() in naslov.lower():
-            print(naslov + " from pornmd.com")
+            print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
+
     return
 
 def xnxx(pojam):
@@ -72,14 +72,15 @@ def xnxx(pojam):
     except:
         print('Nekaj jebe xnxx')
 
-    rezultati = browser.find_element_by_xpath('//*[@id="content-thumbs"]/div[4]')
+    rezultati = browser.find_elements_by_tag_name('a')
 
-    tekst = rezultati.text
-    polje = tekst.split('\n')
+    for rezultat in rezultati:
+        naslov = rezultat.get_attribute('title')
+        if naslov == None: continue
 
-    for naslov in polje:
         if pojam.lower() in naslov.lower():
-            print(naslov + " from xnxx.com")
+            print(naslov + " -> " + rezultat.get_attribute('href'))
+
     return
 
 def xhamster(pojam):
@@ -95,14 +96,17 @@ def xhamster(pojam):
     except:
         print('Nekaj jebe xhamster')
 
-    rezultati = browser.find_element_by_xpath('/html/body/div[1]/main/div/article/div[4]')
+    div = browser.find_element_by_tag_name('article')
+    rezultati = div.find_elements_by_tag_name('a')
 
-    tekst = rezultati.text
-    polje = tekst.split('\n')
-
-    for naslov in polje:
+    for rezultat in rezultati:
+        try:
+            naslov = rezultat.text
+        except:
+            continue
+        if naslov == None: continue
         if pojam.lower() in naslov.lower():
-            print(naslov + " from xhamster.com")
+            print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
 
@@ -120,14 +124,12 @@ def erome(pojam):
     except:
         print('Nekaj jebe erome')
 
-    rezultati = browser.find_element_by_xpath('//*[@id="main"]/div[2]')
+    rezultati = browser.find_elements_by_class_name('album-link')
 
-    tekst = rezultati.text
-    polje = tekst.split('\n')
-
-    for naslov in polje:
+    for rezultat in rezultati:
+        naslov = rezultat.find_element_by_class_name('album-title').text
         if pojam.lower() in naslov.lower():
-            print(naslov + " from erome.com")
+            print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
 
@@ -142,14 +144,12 @@ def hqporner(pojam):
     except:
         print('Nekaj jebe hqporner')
 
-    rezultati = browser.find_element_by_xpath('//*[@id="main"]/div[1]/div[2]/div/div/section/div/div')
+    rezultati = browser.find_elements_by_class_name('click-trigger')
 
-    tekst = rezultati.text
-    polje = tekst.split('\n')
-
-    for naslov in polje:
+    for rezultat in rezultati:
+        naslov = rezultat.text
         if pojam.lower() in naslov.lower():
-            print(naslov + " from hqporner.com")
+            print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
 
@@ -164,12 +164,12 @@ def pornpics(pojam):
     except:
         print('Nekaj jebe pornpics.com')
 
-    rezultati = browser.find_elements_by_class_name('ll-loaded')
+    rezultati = browser.find_elements_by_class_name('rel-link')
 
     for rezultat in rezultati:
-        naslov = rezultat.get_attribute('alt')
+        naslov = rezultat.get_attribute('title')
         if pojam.lower() in naslov.lower():
-            print(naslov + " from pornpics.com")
+            print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
 
@@ -184,13 +184,16 @@ def imagefap(pojam):
     except:
         print('Nekaj jebe imagefap.com')
 
-    rezultati = browser.find_element_by_xpath('//*[@id="main"]/center/table/tbody/tr/td[2]/form/table/tbody/tr/td/table[2]/tbody')
-    tekst = rezultati.text
-    polje = tekst.split('\n')
+    rezultati = browser.find_elements_by_tag_name('a')
 
-    for naslov in polje:
+    for rezultat in rezultati:
+        try:
+            naslov = rezultat.get_attribute('title')
+        except:
+            continue
+        print(naslov)
         if pojam.lower() in naslov.lower():
-            print(naslov + " from imagefap.com")
+            print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
 
@@ -208,12 +211,12 @@ def pornmdslike(pojam):
     except:
         print('Nekaj jebe pornmd')
 
-    rezultati = browser.find_elements_by_class_name('lazyload')
+    rezultati = browser.find_elements_by_class_name('img-block')
 
     for rezultat in rezultati:
-        naslov = rezultat.get_attribute('alt')
+        naslov = rezultat.find_element_by_tag_name('a').get_attribute('title')
         if pojam.lower() in naslov.lower():
-            print(naslov + " from pornmd.com")
+            print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
 
     return
 
@@ -229,12 +232,13 @@ def spankbang(pojam):
     except:
         print('Nekaj jebe spankbang')
 
-    rezultati = browser.find_elements_by_tag_name('img')
+    rezultati = browser.find_elements_by_class_name('n')
 
     for rezultat in rezultati:
-        naslov = rezultat.get_attribute('alt')
+        naslov = rezultat.text
+        if naslov == None: continue
         if pojam.lower() in naslov.lower():
-            print(naslov + " from spankbang.com")
+            print(naslov + " -> " + rezultat.get_attribute('href'))
 
     return
 
@@ -273,12 +277,13 @@ def homemoviestube(pojam):
     except:
         print('Nekaj jebe homemoviestube')
 
-    rezultati = browser.find_elements_by_tag_name('img')
+    rezultati = browser.find_elements_by_class_name('film-title')
 
     for rezultat in rezultati:
-        naslov = rezultat.get_attribute('alt')
+        naslov = rezultat.find_element_by_tag_name('a').text
         if pojam.lower() in naslov.lower():
-            print(naslov + " from homemoviestube.com")
+            print(naslov + " -> " + rezultat.find_element_by_tag_name('a').get_attribute('href'))
+
     return
 
 def porngiphy(pojam):
@@ -304,25 +309,25 @@ def porngiphy(pojam):
 
 def main():
     upis = input("Unesite pojam za pretrazivanje: ")
-
     upis2 = input("Video ili slike? (upisi 'v' ili 's')")
+    #upis3 = input("Show only exact matches? (y/n)") #radi se na tome
 
     if upis2 == "v":
-        hqporner(upis)
-        erome(upis)
-        xhamster(upis)
-        xnxx(upis)
-        pornmd(upis)
-        xvideos(upis)
-        pornhub(upis)
-        spankbang(upis)
-        homemoviestube(upis)
+        hqporner(upis) #linkovi delaju
+        erome(upis) #linkovi delaju
+        xhamster(upis) #linkovi delaju
+        xnxx(upis) #linkovi delaju
+        pornmd(upis) #linkovi delaju
+        xvideos(upis) #linkovi delaju
+        pornhub(upis) #linkovi delaju
+        spankbang(upis) #linkovi delaju
+        homemoviestube(upis) #linkovi delaju
 
     elif upis2 == "s":
-        pornpics(upis)
-        pornmdslike(upis)
-        imagefap(upis)
-        porngiphy(upis)    
+        pornpics(upis) #linkovi delaju
+        pornmdslike(upis) #linkovi delaju
+        imagefap(upis) #nekaj jebe
+        porngiphy(upis) #popupi guze
         #redgifs(upis)
     else:
         print("Try again")
