@@ -190,7 +190,7 @@ def pornpics(pojam):
     rezultati = browser.find_elements_by_class_name('rel-link')
 
     for rezultat in rezultati:
-        naslov = rezultat.get_attribute('title')
+        naslov = rezultat.find_element_by_tag_name('img').get_attribute('alt')
         if pojam.lower() in naslov.lower() and preciznost:
             print(naslov + " -> " + rezultat.get_attribute('href'))
         elif not preciznost and fuzz.partial_token_set_ratio(pojam.lower(), naslov.lower()) > prag:
